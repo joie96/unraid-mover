@@ -13,7 +13,7 @@ import subprocess
 import glob
 
 #Nutzervariablen
-cacheSizeMax = 1500*1024*1024*1024 #Bytes (=1,5TiB)
+cacheSizeMax = 1150*1024*1024*1024 #Bytes (=1,15TiB von 1,65TiB)   Achtung: "btrfs filesystem usage /mnt/ssd-pool/" zeigt andere, aber (vermutlich) richtige Speicherauslastung als Unraid Web
 cacheFileSizeMax = 400*1024*1024 #Bytes (=400MiB)
 
 #Log (1/0 für true/false)
@@ -218,7 +218,7 @@ def start(testRun):
             if logLevel > 0:
                 print("mover_custom: Move: " + str(file.path) + " | Zugriffszeit: " + str(file.atime) + " | Größe: " + str(round(file.size/(1024*1024),2)) + " MiB")
             if testRun > 0:
-                subprocess.run("echo \"" + str(file.path) + "\" | /usr/local/sbin/move -d " + str(logLevel), shell=True)
+                subprocess.run("echo \"" + str.replace(str(file.path),"$","\$") + "\" | /usr/local/sbin/move -d " + str(logLevel), shell=True)
 
     #MOVE: Array --> Cache
     for file in cacheList:
@@ -236,7 +236,7 @@ def start(testRun):
             if logLevel > 0:
                 print("mover_custom: Move: " + str(file.path) + " | Zugriffszeit: " + str(file.atime) + " | Größe: " + str(round(file.size/(1024*1024),2)) + " MiB")
             if testRun > 0:
-                subprocess.run("echo \"" + str(file.path) + "\" | /usr/local/sbin/move -d " + str(logLevel), shell=True)
+                subprocess.run("echo \"" + str.replace(str(file.path),"$","\$") + "\" | /usr/local/sbin/move -d " + str(logLevel), shell=True)
 
 
     print("mover_custom: beendet")
